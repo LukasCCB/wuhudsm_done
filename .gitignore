@@ -1,0 +1,31 @@
+*_decrypted.*
+.idea
+core/.idea
+old_github_update.json
+.env
+/DiscordBOT/
+/panel_license/
+
+### Documentation
+/documentation/API/command.txt
+/documentation/API/server-swagger-ui/*
+
+### Laravel template
+/core/vendor/
+/core/node_modules/
+/core/npm-debug.log
+/core/yarn-error.log
+
+# Laravel 4 specific
+/core/bootstrap/compiled.php
+/core/app/storage/
+
+# Laravel 5 & Lumen specific
+storage/
+hot/
+
+storage/*.key
+/core/Homestead.yaml
+/core/Homestead.json
+/core//.vagrant
+/core/.phpunit.result.cache

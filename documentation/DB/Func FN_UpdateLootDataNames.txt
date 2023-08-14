@@ -1,0 +1,36 @@
+/**
+*	Script for update Name in LootData.
+*	
+*	Created by Sandro
+*/
+CREATE PROCEDURE [dbo].[FN_UpdateLootDataNames]
+AS
+BEGIN
+    UPDATE Items_LootData SET Name = NULL, FNAME = NULL;
+
+    SELECT A.ItemID,
+           CASE WHEN B.Name IS NOT NULL THEN B.Name
+                WHEN C.NAME IS NOT NULL THEN C.NAME
+                WHEN D.NAME IS NOT NULL THEN D.NAME
+                WHEN E.NAME IS NOT NULL THEN E.NAME
+                ELSE 'Generic Items'
+           END AS NAME,
+           CASE WHEN B.FNAME IS NOT NULL THEN B.FNAME
+                WHEN C.FNAME IS NOT NULL THEN C.FNAME
+                WHEN D.FNAME IS NOT NULL THEN D.FNAME
+                WHEN E.FNAME IS NOT NULL THEN E.FNAME
+                ELSE 'Generic FName'
+           END AS FNAME
+    INTO #ATUALIZA_LOOT
+    FROM Items_LootData A WITH(NOLOCK) 
+    LEFT JOIN Items_Weapons B WITH(NOLOCK) ON A.ItemID = B.ItemID
+    LEFT JOIN Items_Gear C WITH(NOLOCK) ON C.ItemID = A.ItemID
+    LEFT JOIN Items_Attachments D WITH(NOLOCK) ON D.ItemID = A.ItemID
+    LEFT JOIN Items_Generic E WITH(NOLOCK) ON E.ItemID = A.ItemID;
+
+    UPDATE Items_LootData
+    SET Name = B.Name,
+        FNAME = B.FNAME
+    FROM Items_LootData A WITH(NOLOCK) 
+    JOIN #ATUALIZA_LOOT B WITH(NOLOCK) ON A.ItemID = B.ItemID;
+END
